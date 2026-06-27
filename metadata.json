@@ -1,0 +1,6 @@
+{
+  "name": "ZAIASA",
+  "description": "Plateforme professionnelle de formation pour les centres d'appel francophones avec simulations d'appels IA réalistes et évaluations complètes.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,118 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "The user account details, stats, badges, and progression",
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "level": {
+          "type": "integer"
+        },
+        "xp": {
+          "type": "integer"
+        },
+        "completedCampaignsCount": {
+          "type": "integer"
+        },
+        "totalCallsCount": {
+          "type": "integer"
+        },
+        "averageScore": {
+          "type": "number"
+        },
+        "badges": {
+          "type": "array"
+        },
+        "role": {
+          "type": "string"
+        },
+        "isActivated": {
+          "type": "boolean"
+        },
+        "activationCode": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "firstName",
+        "lastName",
+        "username",
+        "level",
+        "xp"
+      ]
+    },
+    "Call": {
+      "title": "Call History",
+      "description": "Simulation call records and evaluations",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string"
+        },
+        "campaignId": {
+          "type": "string"
+        },
+        "campaignName": {
+          "type": "string"
+        },
+        "callType": {
+          "type": "string",
+          "enum": [
+            "incoming",
+            "outgoing"
+          ]
+        },
+        "date": {
+          "type": "string"
+        },
+        "duration": {
+          "type": "integer"
+        },
+        "result": {
+          "type": "string"
+        },
+        "score": {
+          "type": "integer"
+        },
+        "evaluation": {
+          "type": "object"
+        },
+        "transcript": {
+          "type": "array"
+        }
+      },
+      "required": [
+        "userId",
+        "campaignId",
+        "campaignName",
+        "callType",
+        "date",
+        "score",
+        "result"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "entities/User"
+      },
+      "description": "Stored user profile and progression"
+    },
+    "/users/{userId}/calls/{callId}": {
+      "schema": {
+        "$ref": "entities/Call"
+      },
+      "description": "History of calls and evaluations for each user"
+    }
+  }
+}
