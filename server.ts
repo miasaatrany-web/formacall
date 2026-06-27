@@ -830,9 +830,13 @@ Retournez UNIQUEMENT un objet JSON valide contenant exactement cette structure (
   }
 });
 
+export default app;
+
 // Configure Vite middleware or serve static assets based on environment
 async function startServer() {
-  if (process.env.NODE_ENV !== "production") {
+  // Only listen if we're not being used as a serverless function
+  if (process.env.NODE_ENV !== "production" || !process.env.VERCEL) {
+    if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
@@ -846,9 +850,10 @@ async function startServer() {
     });
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on port ${PORT}`);
-  });
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  }
 }
 
 startServer();
