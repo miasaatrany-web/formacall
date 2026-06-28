@@ -621,8 +621,6 @@ app.post("/api/gemini/evaluate", async (req, res) => {
   }
 
   try {
-    const ai = getGeminiClient();
-
     const evaluationPrompt = `
 Analysez cette conversation de formation téléphonique francophone de centre d'appels.
 Vous devez réaliser une évaluation approfondie, objective, et extrêmement constructive des performances du conseiller.
@@ -738,9 +736,14 @@ Retournez UNIQUEMENT un objet JSON valide contenant exactement cette structure (
 }
 `;
 
+    console.log("[GEMINI] Starting evaluation for campaign:", campaignName);
+    const ai = getGeminiClient();
+    
+    // Use gemini-1.5-flash which is fast and reliable for evaluations
+    // In @google/genai v2.x, we call generateContent directly on the ai.models object
     const response = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
-      contents: evaluationPrompt,
+      model: "gemini-1.5-flash",
+      contents: [{ role: "user", parts: [{ text: evaluationPrompt }] }],
       config: {
         responseMimeType: "application/json",
         temperature: 0.3,
@@ -822,8 +825,13 @@ Retournez UNIQUEMENT un objet JSON valide contenant exactement cette structure (
 
     const evaluationText = response.text || "{}";
     const evaluationData = JSON.parse(evaluationText.trim());
+    console.log("[GEMINI] Evaluation successful");
     res.json(evaluationData);
-  } catch (error) {
+  } catch (error: any) {
+    console.error("[GEMINI] Error during evaluation:", error.message || error);
+    
+    // If the error is likely a timeout or API key issue, we might still want to use fallback
+    // but on Vercel, a real crash (500) happens before we even reach here sometimes.
     console.log("[GEMINI] Info: Using high-fidelity offline fallback engine for evaluation.");
     const fallbackEvaluation = getFallbackEvaluation(campaignName, callType, clientProfile, history, duration);
     res.json(fallbackEvaluation);

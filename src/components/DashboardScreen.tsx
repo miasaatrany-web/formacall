@@ -4,9 +4,11 @@ import { db } from "../firebase";
 import { CAMPAIGNS, Campaign } from "../campaigns";
 import { UserProfile, HistoricalCall } from "../types";
 import { motion, AnimatePresence } from "motion/react";
+import FrenchLearningScreen from "./FrenchLearningScreen";
 import { 
   PhoneIncoming, 
   PhoneOutgoing, 
+  BookMarked, 
   Star, 
   Clock, 
   TrendingUp, 
@@ -40,7 +42,7 @@ interface DashboardScreenProps {
 }
 
 export default function DashboardScreen({ userId, userProfile, onSelectCampaign, onLogout, onRefreshProfile }: DashboardScreenProps) {
-  const [selectedType, setSelectedType] = useState<"incoming" | "outgoing" | null>(null);
+  const [selectedType, setSelectedType] = useState<"incoming" | "outgoing" | "learning_french" | null>(null);
   const [showHistory, setShowHistory] = useState(false);
   const [historyCalls, setHistoryCalls] = useState<HistoricalCall[]>([]);
   const [selectedPastCall, setSelectedPastCall] = useState<HistoricalCall | null>(null);
@@ -607,7 +609,7 @@ export default function DashboardScreen({ userId, userProfile, onSelectCampaign,
                 Sélectionnez un type de communication pour démarrer votre simulation avec notre IA conversationnelle.
               </p>
 
-              <div className="grid md:grid-cols-2 gap-6 w-full max-w-2xl mx-auto">
+              <div className="grid md:grid-cols-3 gap-6 w-full max-w-4xl mx-auto">
                 <button
                   onClick={() => setSelectedType("incoming")}
                   className="group relative bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-teal-400 dark:hover:border-teal-500 rounded-xl p-6 text-center flex flex-col items-center justify-center transition-all duration-300 shadow-xs hover:shadow-md cursor-pointer overflow-hidden"
@@ -616,10 +618,10 @@ export default function DashboardScreen({ userId, userProfile, onSelectCampaign,
                   <div className="w-14 h-14 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-5 group-hover:scale-105 transition-transform duration-300">
                     <PhoneIncoming className="w-7 h-7" />
                   </div>
-                  <h3 className="font-display text-xl font-bold text-slate-800 dark:text-white mb-1.5 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
+                  <h3 className="font-display text-lg font-bold text-slate-800 dark:text-white mb-1.5 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
                     Appels entrants
                   </h3>
-                  <p className="text-slate-500 dark:text-slate-400 text-xs max-w-xs leading-relaxed font-medium">
+                  <p className="text-slate-500 dark:text-slate-400 text-[11px] max-w-xs leading-relaxed font-medium">
                     Répondez aux réclamations clients, diagnostiquez des pannes et résolvez des problèmes techniques complexes.
                   </p>
                 </button>
@@ -632,15 +634,37 @@ export default function DashboardScreen({ userId, userProfile, onSelectCampaign,
                   <div className="w-14 h-14 rounded-xl bg-teal-50 dark:bg-teal-950/50 text-teal-600 dark:text-teal-400 flex items-center justify-center mb-5 group-hover:scale-105 transition-transform duration-300">
                     <PhoneOutgoing className="w-7 h-7" />
                   </div>
-                  <h3 className="font-display text-xl font-bold text-slate-800 dark:text-white mb-1.5 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
+                  <h3 className="font-display text-lg font-bold text-slate-800 dark:text-white mb-1.5 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
                     Appels sortants
                   </h3>
-                  <p className="text-slate-500 dark:text-slate-400 text-xs max-w-xs leading-relaxed font-medium">
+                  <p className="text-slate-500 dark:text-slate-400 text-[11px] max-w-xs leading-relaxed font-medium">
                     Contactez des prospects, proposez des contrats d'assurance et de placement, et traitez les objections commerciales.
+                  </p>
+                </button>
+
+                <button
+                  onClick={() => setSelectedType("learning_french")}
+                  className="group relative bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-teal-400 dark:hover:border-teal-500 rounded-xl p-6 text-center flex flex-col items-center justify-center transition-all duration-300 shadow-xs hover:shadow-md cursor-pointer overflow-hidden"
+                  id="learning-french-btn"
+                >
+                  <div className="w-14 h-14 rounded-xl bg-teal-50 dark:bg-teal-950/50 text-teal-600 dark:text-teal-400 flex items-center justify-center mb-5 group-hover:scale-105 transition-transform duration-300">
+                    <BookMarked className="w-7 h-7" />
+                  </div>
+                  <h3 className="font-display text-lg font-bold text-slate-800 dark:text-white mb-1.5 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
+                    Apprendre le français
+                  </h3>
+                  <p className="text-slate-500 dark:text-slate-400 text-[11px] max-w-xs leading-relaxed font-medium">
+                    Perfectionnez votre grammaire, évitez les fautes d'orthographe et entraînez-vous sur l'élocution et l'intonation.
                   </p>
                 </button>
               </div>
             </motion.div>
+          ) : selectedType === "learning_french" ? (
+            <FrenchLearningScreen
+              isActivated={userProfile.isActivated === true || isAdmin}
+              onBack={() => setSelectedType(null)}
+              userProfile={userProfile}
+            />
           ) : (
             // Phase 2: Campaign chooser
             <motion.div 
