@@ -30,7 +30,8 @@ import {
   Search,
   Check,
   RefreshCw,
-  Plus
+  Plus,
+  Headset
 } from "lucide-react";
 
 interface DashboardScreenProps {
@@ -249,8 +250,8 @@ export default function DashboardScreen({ userId, userProfile, onSelectCampaign,
       {/* Mini-Header for Profile and Stats */}
       <header className="border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md px-6 py-4 flex items-center justify-between sticky top-0 z-30 shadow-xs">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-teal-600 dark:bg-teal-500 flex items-center justify-center font-display font-bold text-white shadow-sm">
-            Z
+          <div className="w-8 h-8 rounded-lg bg-teal-600 dark:bg-teal-500 flex items-center justify-center text-white shadow-sm" id="callcenter-logo">
+            <Headset className="w-4.5 h-4.5" />
           </div>
           <div>
             <span className="font-display font-bold text-base text-slate-800 dark:text-white tracking-tight block">ZAIASA</span>

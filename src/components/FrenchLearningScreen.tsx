@@ -732,10 +732,11 @@ export default function FrenchLearningScreen({ isActivated, onBack, userProfile 
         <div>
           <button 
             onClick={onBack}
-            className="text-[10px] font-extrabold text-slate-400 dark:text-slate-500 hover:text-teal-600 dark:hover:text-teal-400 uppercase tracking-widest mb-1 flex items-center gap-1 transition-colors cursor-pointer"
+            className="inline-flex items-center gap-2 px-3 py-1.5 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-teal-500 hover:text-teal-600 dark:hover:text-teal-400 text-slate-600 dark:text-slate-300 rounded-lg text-xs font-bold transition-all cursor-pointer active:scale-95 mb-3"
             id="back-to-home-btn"
           >
-            ← Retour au choix initial
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span>Retour au menu principal (Appels / Français)</span>
           </button>
           <h2 className="font-display text-2xl font-bold text-slate-800 dark:text-white flex items-center gap-2.5">
             <BookMarked className="w-6 h-6 text-teal-600 dark:text-teal-400" />
